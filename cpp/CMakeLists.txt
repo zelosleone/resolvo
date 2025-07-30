@@ -124,14 +124,18 @@ install(
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/resolvo)
 
 if(BUILD_SHARED_LIBS)
-  install(FILES $<TARGET_FILE:${resolvo_cpp_impl}> TYPE BIN)
+  if(WIN32)
+    install(FILES $<TARGET_FILE:${resolvo_cpp_impl}> DESTINATION ${CMAKE_INSTALL_BINDIR})
+  else()
+    install(FILES $<TARGET_FILE:${resolvo_cpp_impl}> DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  endif()
   if(WIN32)
     install(FILES $<TARGET_LINKER_FILE:${resolvo_cpp_impl}> 
-            TYPE LIB 
+            DESTINATION ${CMAKE_INSTALL_LIBDIR} 
             RENAME resolvo_cpp.lib)
   endif()
 else()
-    install(FILES $<TARGET_FILE:${resolvo_cpp_impl}> TYPE LIB)
+    install(FILES $<TARGET_FILE:${resolvo_cpp_impl}> DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
 
 include(CMakePackageConfigHelpers)
